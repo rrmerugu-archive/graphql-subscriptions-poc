@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "3729680fdbbaa0ff304050f2b77ad32d1cede71a4bffd5e817c8af363f40de03"
+            "sha256": "2e438151b71b3f6d69f33e236e260aa012e2e2bfd5037f725dc69e2c10932dd7"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -32,8 +32,8 @@
             "version": "==3.2.1"
         },
         "ariadne": {
-            "git": "https://github.com/mirumee/ariadne.git",
-            "ref": "develop"
+            "git": "ssh://github.com/mirumee/ariadne.git",
+            "ref": "master"
         },
         "asgiref": {
             "hashes": [

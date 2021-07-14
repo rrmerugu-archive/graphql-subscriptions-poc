@@ -19,5 +19,5 @@ asyncio-redis = "*"
 python_version = "3.8"
 
 [packages.ariadne]
-git = "https://github.com/mirumee/ariadne.git"
-ref = "develop"
+git = "ssh://github.com/mirumee/ariadne.git"
+ref = "master"
