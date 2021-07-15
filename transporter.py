@@ -128,12 +128,13 @@ class GremlinDriver:
         await self.transporter.write(message)
         responses = []
         response_data = await self.transporter.read()
+        # yield response_data
+
         responses.append(response_data)
         status_code = await self.get_status_code_from_response(response_data)
-
         while status_code == 206:
-            print("status_code", status_code)
             response_data = await self.transporter.read()
+            # yield response_data
             status_code = await self.get_status_code_from_response(response_data)
             responses.append(response_data)
         if status_code == 200:
@@ -141,13 +142,13 @@ class GremlinDriver:
         return responses
 
 
-# async def read_data():
-#     query_string = "g.V().toList()"
-#     responses =  await driver.execute_query(query_string )
-#     print(responses)
-#     for response in responses:
-#         print(response['result']['data']['@value'].__len__())
-#
+async def read_data():
+    query_string = "g.V().toList()"
+    responses = await driver.execute_query(query_string)
+    print(responses)
+    for response in responses:
+        print(response['result']['data']['@value'].__len__())
+
 
 # def run_as_sync()
 
@@ -155,10 +156,10 @@ if __name__ == "__main__":
     loop = asyncio.get_event_loop()
 
     driver = GremlinDriver("ws://localhost:8182/gremlin", event_loop=loop)
-    #
-    query_string = "g.V().count()"
-    response = loop.run_until_complete(driver.execute_query(query_string))
-    print("count======", response[0]['result']['data']['@value'][0]['@value'])
+    # #
+    # query_string = "g.V().count()"
+    # response = loop.run_until_complete(driver.execute_query(query_string))
+    # print("count======", response[0]['result']['data']['@value'][0]['@value'])
     # exit()
 
     # for i in range(0, 1000):
@@ -173,7 +174,8 @@ if __name__ == "__main__":
     #     print("++++++++++++======+++++++++++++")
     #
     query_string = "g.V().toList()"
-    responses = loop.run_until_complete(driver.execute_query(query_string, ))
-    print(responses)
-    for response in responses:
-        print(response['result']['data']['@value'].__len__())
+    # responses = loop.run_until_complete(driver.execute_query(query_string, ))
+    # for response in responses:
+    #     print(response['result']['data']['@value'].__len__())
+
+    responses = loop.run_until_complete(read_data())

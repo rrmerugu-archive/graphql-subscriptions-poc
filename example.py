@@ -34,13 +34,26 @@ type_defs = """
 
 # pubsub = Broadcast("memory://")
 pubsub = Broadcast("redis://localhost:6379")
+import asyncio
 
 mutation = MutationType()
+
+from transporter import GremlinDriver
 
 
 @mutation.field("send")
 async def resolve_send(*_, **message):
     await pubsub.publish(channel="chatroom", message=json.dumps(message))
+
+    loop = asyncio.get_event_loop()
+    driver = GremlinDriver("ws://localhost:8182/gremlin", event_loop=loop)
+
+    query_string = "g.V().toList()"
+    responses = await driver.execute_query(query_string)
+    print(responses)
+    for response in responses:
+        print(response['result']['data']['@value'].__len__())
+
     return True
 
 
@@ -75,7 +88,8 @@ schema = make_executable_schema(type_defs, mutation, subscription)
 def on_connect(ws, payload):
     user_token = str(payload.get("authUser") or "").strip().lower()
     if "ban" in user_token:
-        raise WebSocketConnectionError({"message": "User is banned", "code": "BANNED", "ctx": user_token, "loc": "__ROOT__"})
+        raise WebSocketConnectionError(
+            {"message": "User is banned", "code": "BANNED", "ctx": user_token, "loc": "__ROOT__"})
     ws.scope["user_token"] = user_token or None
 
 
