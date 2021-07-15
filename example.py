@@ -9,7 +9,7 @@ from broadcaster import Broadcast
 from starlette.applications import Starlette
 from starlette.middleware import Middleware
 from starlette.middleware.cors import CORSMiddleware
-
+import gremlin_python
 import uvicorn
 
 type_defs = """

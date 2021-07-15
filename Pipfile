@@ -12,6 +12,8 @@ unicorn = "*"
 starlette = "*"
 Jinja2 = "*"
 asyncio-redis = "*"
+gremlinpython = "==3.4.6"
+aiohttp = "*"
 
 [dev-packages]
 
